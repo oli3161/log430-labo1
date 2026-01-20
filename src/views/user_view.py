@@ -12,7 +12,7 @@ class UserView:
         """ Show menu with operation options which can be selected by the user """
         controller = UserController()
         while True:
-            print("\n1. Montrer la liste d'utilisateurs\n2. Ajouter un utilisateur\n3. Quitter l'appli")
+            print("\n1. Montrer la liste d'utilisateurs\n2. Ajouter un utilisateur\n3. Gérer les produits\n4. Quitter l'appli")
             choice = input("Choisissez une option: ")
 
             if choice == '1':
@@ -23,6 +23,10 @@ class UserView:
                 user = User(None, name, email)
                 controller.create_user(user)
             elif choice == '3':
+                # Open product menu
+                from views.product_view import ProductView
+                ProductView.show_options()
+            elif choice == '4':
                 controller.shutdown()
                 break
             else:

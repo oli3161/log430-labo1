@@ -5,10 +5,11 @@ Auteurs : Gabriel C. Ullmann, Fabio Petrillo, 2025
 """
 
 from daos.user_dao import UserDAO
+from daos.user_dao_mongo import UserMongoDAO
 
 class UserController:
     def __init__(self):
-        self.dao = UserDAO()
+        self.dao = UserMongoDAO()
 
     def list_users(self):
         """ List all users """
