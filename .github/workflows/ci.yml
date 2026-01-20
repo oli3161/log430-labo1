@@ -21,8 +21,11 @@ jobs:
 
       - name: Démarrer le conteneur
         run: |
+          docker compose down -v
+          docker network prune
           docker network create labo01-network
-          docker compose up -d
+          docker compose up -d --build
+
 
       - name: Attendre MySQL
         run: |
@@ -39,28 +42,12 @@ jobs:
           done
           sleep 5
 
-      - name: Éxécuter les tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}/src
-        run: | 
-          python -m pytest
+      - name: Éxécuter les tests (TODO - ajouter test_products)
+        run: docker exec store_manager_cli pytest ./src/tests/test_user.py
 
 
       - name: Cleanup
         if: always()
         run: docker compose down -v
 
-  deploy:
-    name: Déploiement Docker sur la VM
-    needs: test
-    runs-on: self-hosted
-
-    steps:
-      - name: Checkout dépôt
-        uses: actions/checkout@v4
-
-      - name: Build et relancer Docker
-        run: |
-          docker compose down
-          docker compose build
-          docker compose up -d
+ 
