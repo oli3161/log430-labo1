@@ -22,7 +22,7 @@ jobs:
       - name: Démarrer le conteneur
         run: |
           docker compose down -v
-          docker network prune
+          docker network prune -f
           docker network create labo01-network
           docker compose up -d --build
 
