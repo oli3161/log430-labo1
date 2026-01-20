@@ -2,7 +2,7 @@ from daos.product_dao import ProductDAO
 from models.product import Product
 
 dao = ProductDAO()
-#
+
 
 def test_product_select():
     # insert some products to ensure there are at least 3
