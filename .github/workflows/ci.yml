@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout dépot
@@ -14,6 +14,7 @@ jobs:
         run: |
           echo "MYSQL_HOST=mysql" >> .env
           echo "MONGODB_HOST=mongo" >> .env
+          echo "MONGO_DB_NAME=admin" >> .env
           echo "MYSQL_DB_NAME=labo01_db" >> .env
           echo "DB_USERNAME=labo01" >> .env
           echo "DB_PASSWORD=labo01" >> .env
@@ -44,3 +45,18 @@ jobs:
       - name: Cleanup
         if: always()
         run: docker compose down -v
+
+  deploy:
+    name: Déploiement Docker sur la VM
+    needs: test
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout dépôt
+        uses: actions/checkout@v4
+
+      - name: Build et relancer Docker
+        run: |
+          docker compose down
+          docker compose build
+          docker compose up -d
